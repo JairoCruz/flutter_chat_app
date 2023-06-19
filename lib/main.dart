@@ -1,4 +1,5 @@
 import 'package:chat_app/config/theme/app_theme.dart';
+import 'package:chat_app/presentacion/screens/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,17 +12,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Chat App',
-      theme: AppTheme(selectedColor: 4).theme(),
-      home:  Scaffold(
-        body: Center(
-          child: FilledButton.tonal(
-              onPressed: () {},
-               child: const Text('Presioname')
-               ),
-      ),
-    )
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Chat App',
+        theme: AppTheme(selectedColor: 1).theme(),
+        home: const Scaffold(
+          body: ChatScreen()
+        ));
   }
 }
