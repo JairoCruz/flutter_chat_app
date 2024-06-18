@@ -13,12 +13,17 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        /* systemOverlayStyle: const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+         // statusBarColor: Colors.green
+        ),*/
         leading: const Padding(
           padding: EdgeInsets.all(4.0),
           child: CircleAvatar(
-            backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt2XKEGC_Hwc-ekYUsqfATHQXJI-Gp2ErLEQ&usqp=CAU'),
-          ), 
+            backgroundImage: NetworkImage(
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt2XKEGC_Hwc-ekYUsqfATHQXJI-Gp2ErLEQ&usqp=CAU'),
           ),
+        ),
         title: const Text('Chat MSG'),
         centerTitle: false,
       ),
@@ -28,10 +33,9 @@ class ChatScreen extends StatelessWidget {
 }
 
 class _ChatView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
+    // Create Providers
     final chatProvider = context.watch<ChatProvider>();
 
     return SafeArea(
@@ -40,20 +44,24 @@ class _ChatView extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: chatProvider.messageList.length,
-                itemBuilder: (context, index) {
+                child: ListView.builder(
+              controller: chatProvider.chatScrollController,
+              itemCount: chatProvider.messageList.length,
+              itemBuilder: (context, index) {
+                final message = chatProvider.messageList[index];
 
-                  final message = chatProvider.messageList[index];
-                  
-                  return (message.fromWho == FromWho.hers)
-                  ? const HerMessageBubble()
-                  : MyMessageBubble(message: message,);
-                  
-                },
-                )
+                return (message.fromWho == FromWho.hers)
+                    ? HerMessageBubble(
+                        message: message,
+                      )
+                    : MyMessageBubble(
+                        message: message,
+                      );
+              },
+            )),
+            MessageFieldBox(
+              onValue: (value) => chatProvider.sendMessage(value),
             ),
-           const MessageFieldBox(),
           ],
         ),
       ),
